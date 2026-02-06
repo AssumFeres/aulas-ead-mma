@@ -1,1 +1,798 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DTA — Aula 02 | Desenho Técnico de Aeronaves</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: rgba(255, 255, 255, 0.06);
+        --panel2: rgba(255, 255, 255, 0.08);
+        --text: #eaf1ff;
+        --muted: rgba(234, 241, 255, 0.72);
+        --border: rgba(255, 255, 255, 0.1);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --radius: 18px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+        background:
+          radial-gradient(
+            1200px 700px at 70% 20%,
+            rgba(76, 169, 255, 0.18),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 600px at 20% 70%,
+            rgba(140, 97, 255, 0.16),
+            transparent 60%
+          ),
+          var(--bg);
+        color: var(--text);
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 24px 40px;
+      }
+      header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 18px 10px 18px;
+        border: 1px solid var(--border);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 99px;
+        background: #5cb6ff;
+        margin-top: 7px;
+        box-shadow: 0 0 0 4px rgba(92, 182, 255, 0.18);
+      }
+      h1 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: 0.2px;
+      }
+      .sub {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .btn {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 28px;
+        align-items: start;
+        margin-top: 18px;
+      }
+      .toc {
+        position: sticky;
+        top: 16px;
+        padding: 16px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .toc h3 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        color: var(--muted);
+        letter-spacing: 0.2px;
+      }
+      .toc a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        border: 1px solid transparent;
+        color: var(--text);
+        font-size: 14px;
+      }
+      .toc a:hover {
+        border-color: var(--border);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .content-area {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.25fr 0.9fr;
+        gap: 16px;
+        padding: 18px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .hero h2 {
+        margin: 0;
+        font-size: 34px;
+      }
+      .hero p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+      .pillrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .pill {
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .heroimg {
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.25);
+      }
+      .heroimg img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .card {
+        padding: 18px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .sec-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+      .badge {
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .content p {
+        margin: 0 0 10px 0;
+        color: var(--text);
+        line-height: 1.6;
+        text-align: justify;
+        text-justify: inter-word;
+      }
+      .mini {
+        margin: 10px 0 0 18px;
+        color: var(--text);
+      }
+      .mini li {
+        margin: 6px 0;
+        line-height: 1.5;
+      }
+      .figure {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.25);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+      }
+      .figure img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .float-right {
+        float: right;
+        width: 340px;
+        max-width: 45%;
+        margin: 6px 0 12px 18px;
+      }
+      section {
+        clear: both;
+      }
+      section::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .quiz {
+        clear: both;
+      }
+      .q {
+        margin-top: 12px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .q h4 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+      }
+      .opt {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin: 8px 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .opt input {
+        margin-top: 3px;
+      }
+      .result {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px dashed var(--border);
+        color: var(--muted);
+      }
+      footer {
+        margin: 18px 0 6px;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+      @media (max-width: 980px) {
+        .wrap {
+          padding: 18px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .toc {
+          position: relative;
+          top: auto;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        .float-right {
+          float: none;
+          width: 100%;
+          max-width: 100%;
+          margin: 10px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="dot"></div>
+          <div>
+            <h1>DTA — Aula 02</h1>
+            <div class="sub">
+              Desenho Técnico de Aeronaves • Página de apoio à instrução •
+              Atualizado em 06/02/2026
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn"
+          onclick="
+            document
+              .getElementById('quiz')
+              .scrollIntoView({ behavior: 'smooth' })
+          "
+        >
+          Ir para Quiz
+        </button>
+      </header>
 
+      <div class="grid">
+        <aside class="toc">
+          <h3>Sumário</h3>
+          <a href="#quadros-de-título">Quadros de Título</a
+          ><a href="#números-de-referência-e-extensões"
+            >Números de Referência e Extensões</a
+          ><a href="#sistema-de-numeração-universal"
+            >SISTEMA DE NUMERAÇÃO UNIVERSAL</a
+          ><a href="#lista-de-material">Lista de Material</a
+          ><a href="#outras-informações-sobre-desenhos"
+            >Outras Informações sobre Desenhos</a
+          ><a
+            href="#números-da-estação-e-identificação-de-localização-na-aeronav"
+            >Números da Estação e Identificação de Localização na Aeronave</a
+          ><a href="#aplicação">Aplicação</a>
+          <div style="margin-top: 14px" class="badge">
+            Dica: use o sumário para navegar
+          </div>
+        </aside>
+
+        <main class="content-area">
+          <section class="hero" id="topo">
+            <div>
+              <h2>Desenhos técnicos de aeronaves</h2>
+              <p>
+                Nesta aula você vai consolidar como as
+                <b>informações de identificação</b> (quadro de título, revisões,
+                observações e listas) organizam e dão rastreabilidade aos
+                desenhos, além de compreender como a <b>numeração</b> e as
+                <b>estações</b> são usadas para localização na aeronave.
+              </p>
+              <div class="pillrow">
+                <div class="pill">Quadro de título</div>
+                <div class="pill">Extensões / LH-RH</div>
+                <div class="pill">Numeração universal</div>
+                <div class="pill">Lista de material</div>
+                <div class="pill">Revisões e observações</div>
+                <div class="pill">FS / WL / BL</div>
+              </div>
+            </div>
+            <div class="heroimg">
+              <img src="assets/slide-02-01.jpeg" alt="Capa Aula 02" />
+            </div>
+          </section>
+
+          <section id="quadros-de-título" class="card">
+            <div class="sec-head">
+              <h2>Quadros de Título</h2>
+              <div class="badge">Slides: 4, 5</div>
+            </div>
+
+            <div class="figure float-right">
+              <img src="assets/slide-04-03.png" alt="Quadros de Título" />
+            </div>
+
+            <div class="content">
+              <p>
+                Toda impressão precisa ter algum modo de identificação. Isto é
+                feito com o quadro de título. O quadro de título consiste em um
+                número de desenho e outros dados relativos ao desenho e o objeto
+                que ele representa.
+              </p>
+              <p>
+                Estas informações são agrupadas em um lugar proeminente da
+                impressão, normalmente no canto inferior direito. Algumas vezes
+                o quadro de título está em formato de tira ao longo de toda a
+                parte de baixo da folha.
+              </p>
+              <p>
+                Apesar de os quadros de título não seguirem um padrão quanto a
+                sua disposição, todos contêm essencialmente as seguintes
+                informações.
+              </p>
+              <ul class="mini">
+                <li>
+                  Número do desenho para identificar a impressão para fins de
+                  arquivamento e para evitar confundi-lo com outra impressão.
+                </li>
+                <li>O nome da peça ou conjunto.</li>
+                <li>A escala na qual está desenhada.</li>
+                <li>A data.</li>
+                <li>O nome da firma.</li>
+                <li>
+                  O nome do desenhista, verificador, e a pessoa que aprovou o
+                  desenho.
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section id="números-de-referência-e-extensões" class="card">
+            <div class="sec-head">
+              <h2>Números de Referência e Extensões</h2>
+              <div class="badge">Slides: 7, 8</div>
+            </div>
+
+            <div class="figure float-right">
+              <img
+                src="assets/slide-07-03.png"
+                alt="Números de Referência e Extensões"
+              />
+            </div>
+
+            <div class="content">
+              <p>
+                Os números de referência que aparecem em um quadro de títulos
+                informam o número de outras cópias. Quando mais de um detalhe é
+                mostrado em um desenho são utilizadas extensões. Ambas as peças
+                tem o mesmo número de desenho mais um número individual como,
+                por exemplo, 40267-1 e 40267-2.
+              </p>
+              <p>
+                Além de aparecer no quadro de títulos, as extensões podem
+                aparecer no desenho próximo às peças que identificam. Os números
+                de extensões também podem ser utilizados para identificar peças
+                direitas e esquerdas.
+              </p>
+              <p>
+                Em uma aeronave muitas peças do lado esquerdo são parecidas com
+                as peças correspondentes do lado direito só que invertidas. A
+                peça esquerda sempre aparece no desenho. A peça direita é citada
+                no quadro de título. Acima do quadro de títulos existe uma
+                anotação como: 470204-1LH exibida; 470204-2RH oposta. Ambas as
+                peças possuem o mesmo número, mas a peça desejada é diferenciada
+                pelo número de extensão. Algumas cópias têm números ímpares para
+                peças esquerdas e números pares para peças direitas.
+              </p>
+            </div>
+          </section>
+
+          <section id="sistema-de-numeração-universal" class="card">
+            <div class="sec-head">
+              <h2>SISTEMA DE NUMERAÇÃO UNIVERSAL</h2>
+              <div class="badge">Slides: 9</div>
+            </div>
+
+            <div class="figure float-right">
+              <img
+                src="assets/slide-09-03.jpeg"
+                alt="SISTEMA DE NUMERAÇÃO UNIVERSAL"
+              />
+            </div>
+
+            <div class="content">
+              <p>
+                O sistema de numeração universal é um meio os meios de
+                identificação de desenhos de tamanho padrão. Nesse sistema de
+                numeração universal cada número de desenho consiste de seis ou
+                sete dígitos.
+              </p>
+              <p>
+                O primeiro dígito é sempre 1, 2, 4 ou 5 e indica o tamanho do
+                desenho. Os demais dígitos identificam o desenho.
+              </p>
+              <p>
+                Muitas firmas têm modificado este sistema básico para adequá-lo
+                às suas necessidades particulares.
+              </p>
+              <p>Letras podem ser usadas em lugar dos números.</p>
+              <p>
+                A letra ou número que representa o tamanho do desenho padrão
+                pode prefixar o número, separando-o por um traço.
+              </p>
+              <p>
+                Outros sistemas de numeração trazem um campo separado antes do
+                número do desenho para identificar o seu tamanho.
+              </p>
+              <p>
+                Em outras modificações deste sistema, o número da peça do
+                conjunto representado é designado igual ao número do desenho.
+              </p>
+            </div>
+          </section>
+
+          <section id="lista-de-material" class="card">
+            <div class="sec-head">
+              <h2>Lista de Material</h2>
+              <div class="badge">Slides: 10</div>
+            </div>
+
+            <div class="figure float-right">
+              <img src="assets/slide-10-03.png" alt="Lista de Material" />
+            </div>
+
+            <div class="content">
+              <p>
+                Uma lista de materiais e peças necessárias à fabricação ou
+                montagem de um componente ou sistema é frequentemente
+              </p>
+              <p>
+                frequentemente incluída no desenho. A lista é normalmente
+                formatada em colunas onde são listados os números das peças, o
+                nome, material que deve ser construída, quantidade necessária e
+                origem da peça ou material. A Figura mostra uma típica lista de
+                materiais. Nos desenhos que não tem uma lista de materiais estas
+                informações são indicadas diretamente no desenho.
+              </p>
+              <p>
+                Nos desenhos de montagem cada item é identificado por um número
+                em um círculo ou quadrado. Uma seta conectando o número ao item
+                ajuda a localizá-lo na lista de materiais.
+              </p>
+            </div>
+          </section>
+
+          <section id="outras-informações-sobre-desenhos" class="card">
+            <div class="sec-head">
+              <h2>Outras Informações sobre Desenhos</h2>
+              <div class="badge">Slides: 11, 12, 13, 14</div>
+            </div>
+
+            <div class="figure float-right">
+              <img
+                src="assets/slide-11-03.png"
+                alt="Outras Informações sobre Desenhos"
+              />
+            </div>
+
+            <div class="content">
+              <p>Quadro de Revisão</p>
+              <p>
+                Revisões em um desenho são necessários quando há alterações de
+                dimensões, modelo ou materiais. As mudanças são normalmente
+                listadas em colunas adjacentes ao quadro de título, ou em um
+                canto do desenho. Todas as mudanças aprovadas para um desenho
+                devem ser cuidadosamente anotadas em todas as cópias existentes
+                daquele desenho.
+              </p>
+              <p>
+                Quando um desenho contém correções elas devem ser destacadas por
+                letras ou numeração e então listadas pelo símbolo no quadro de
+                revisão da Figura.
+              </p>
+              <p>Quadro de Revisão</p>
+              <p>
+                O quadro de revisão contém o símbolo de identificação, a data, a
+                natureza da revisão, a autoridade para a mudança e o nome do
+                desenhista que fez a mudança.
+              </p>
+              <p>
+                Para diferenciar o desenho corrigido da sua versão anterior
+                muitas firmas estão incluindo um espaço para a inserção do
+                símbolo apropriado no quadro de título para designar que o
+                desenho foi alterado ou revisado.
+              </p>
+              <p>Observações</p>
+              <p>
+                Observações são incluídas aos desenhos por diversos motivos.
+                Algumas observações referem-se aos métodos de conexão ou
+                construção. Outras dão alternativas de utilização do desenho em
+                diferentes estilos do mesmo objeto. Outros ainda listam
+                modificações disponíveis.
+              </p>
+              <p>
+                As observações podem ser encontradas ao longo do item ao qual se
+                referem e, caso sejam extensas, elas podem ser colocadas em
+                qualquer parte do desenho e identificadas por letras e números.
+                As observações são utilizadas somente quando a informação não
+                puder ser transmitida de maneira convencional ou quando for
+                necessário evitar poluir o desenho. A Figura ilustra um método
+                de notas descritivas.
+              </p>
+              <p>Observações</p>
+              <p>
+                Quando a observação refere-se a uma peça específica uma linha
+                leve com setas nas extremidades indicam a peça com a observação.
+                Se ela se aplica a mais de uma peça a observação é descrita de
+                maneira a evitar ambiguidade em relação às peças a que se
+                refere. Caso haja diversas observações, elas são normalmente
+                agrupadas e numeradas consecutivamente.
+              </p>
+            </div>
+          </section>
+
+          <section
+            id="números-da-estação-e-identificação-de-localização-na-aeronav"
+            class="card"
+          >
+            <div class="sec-head">
+              <h2>
+                Números da Estação e Identificação de Localização na Aeronave
+              </h2>
+              <div class="badge">Slides: 16, 17, 18</div>
+            </div>
+
+            <div class="figure float-right">
+              <img
+                src="assets/slide-16-03.png"
+                alt="Números da Estação e Identificação de Localização na Aeronave"
+              />
+            </div>
+
+            <div class="content">
+              <p>
+                Um sistema numérico é usado em grandes conjuntos para aeronaves
+                para localizar as estações, como as estações da fuselagem. A
+                estação da fuselagem 185 indica uma localização que está a 185
+                polegadas da informação da aeronave.
+              </p>
+              <p>
+                A medida é normalmente tirada do nariz ou da estação zero, mas
+                em alguns casos pode ser tirada a partir da parede corta fogo ou
+                algum outro ponto determinado pelo fabricante.
+              </p>
+              <p>
+                Assim como as localizações da parte da frente da aeronave são
+                feitas pela referência, as localizações da esquerda e direita do
+                eixo longitudinal da aeronave são feitos pela referência na
+                linha traseira e são chamadas estações traseiras. As
+                localizações verticais na aeronave são feitas tendo como
+                referência a linha de flutuação.
+              </p>
+              <p>
+                O mesmo sistema de numeração de estação é usado para estruturas
+                da asa e estabilizador. A medida é tomada a partir da linha de
+                centro ou estação zero da aeronave. A Figura mostra como são
+                utilizadas as estações da fuselagem (FS), localização da linha
+                de flutuação (WL), e linha traseira esquerda e direita (RBL e
+                LBL).
+              </p>
+            </div>
+          </section>
+
+          <section id="aplicação" class="card">
+            <div class="sec-head">
+              <h2>Aplicação</h2>
+              <div class="badge">Slides: 23</div>
+            </div>
+
+            <div class="content">
+              <p>
+                Quando trazidas próximos ao quadro de título a aplicação pode se
+                referir a aeronave, conjunto, sub conjunto ou instalação própria
+                onde a peça seria usada.
+              </p>
+            </div>
+          </section>
+
+          <section id="quiz" class="card quiz">
+            <div class="sec-head">
+              <h2>Quiz rápido (autoavaliação)</h2>
+              <div class="badge">3 questões</div>
+            </div>
+            <p class="sub" style="margin: 6px 0 0">
+              Marque uma alternativa e clique em “Corrigir”.
+            </p>
+
+            <div class="q" data-a="b">
+              <h4>
+                1) Qual é a principal função do quadro de título em um desenho?
+              </h4>
+              <label class="opt"
+                ><input type="radio" name="q1" value="a" /> Servir apenas como
+                decoração padronizada.</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q1" value="b" /> Identificar o
+                desenho e reunir dados essenciais (nº, nome, escala, data
+                etc.).</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q1" value="c" /> Indicar somente o
+                material da peça.</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q1" value="d" /> Definir
+                exclusivamente o método de fabricação.</label
+              >
+              <div class="result"></div>
+            </div>
+
+            <div class="q" data-a="c">
+              <h4>
+                2) Em extensões (ex.: 40267-1 e 40267-2), o que muda entre as
+                peças?
+              </h4>
+              <label class="opt"
+                ><input type="radio" name="q2" value="a" /> A escala do desenho
+                sempre muda.</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q2" value="b" /> O quadro de revisão
+                é removido.</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q2" value="c" /> Mantém-se o número
+                base e acrescenta-se o sufixo para diferenciar
+                detalhes/variações.</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q2" value="d" /> O nome do desenhista
+                deixa de existir.</label
+              >
+              <div class="result"></div>
+            </div>
+
+            <div class="q" data-a="a">
+              <h4>3) A estação da fuselagem FS 185 indica:</h4>
+              <label class="opt"
+                ><input type="radio" name="q3" value="a" /> Localização a 185
+                polegadas a partir da referência definida pelo fabricante (ex.:
+                nariz/FS0).</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q3" value="b" /> Altura de 185 mm
+                acima da linha de flutuação.</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q3" value="c" /> Posição sempre
+                medida a partir da ponta da asa.</label
+              >
+              <label class="opt"
+                ><input type="radio" name="q3" value="d" /> Indicação exclusiva
+                do material do conjunto.</label
+              >
+              <div class="result"></div>
+            </div>
+
+            <button class="btn" onclick="corrigir()">Corrigir</button>
+            <button
+              class="btn"
+              style="margin-left: 8px"
+              onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+            >
+              Voltar ao topo
+            </button>
+          </section>
+
+          <footer>
+            AFJr &reg; • Conteúdo gerado a partir dos slides da Aula 02 de DTA.
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      function corrigir() {
+        document.querySelectorAll(".q").forEach((q) => {
+          const ans = q.getAttribute("data-a");
+          const name = q.querySelector('input[type="radio"]').name;
+          const chosen = (
+            document.querySelector('input[name="' + name + '"]:checked') || {}
+          ).value;
+          const box = q.querySelector(".result");
+          if (!chosen) {
+            box.textContent = "Selecione uma alternativa.";
+            return;
+          }
+          if (chosen === ans) {
+            box.textContent = "✅ Correto.";
+          } else {
+            box.textContent =
+              "❌ Incorreto. Resposta correta: " + ans.toUpperCase() + ".";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
