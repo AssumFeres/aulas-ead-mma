@@ -1,1 +1,481 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DTA — Aula 01 | Desenho Técnico de Aeronaves</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111826;
+      --panel2: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --line: #243047;
+      --accent: #60a5fa;
+      --ok: #34d399;
+      --bad: #fb7185;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(96,165,250,.22), transparent 60%),
+                  radial-gradient(900px 500px at 85% 0%, rgba(52,211,153,.14), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1100px; margin:0 auto; padding:24px}
+    header{
+      position:sticky; top:0; z-index:30;
+      backdrop-filter: blur(10px);
+      background: rgba(11,15,20,.75);
+      border-bottom: 1px solid rgba(36,48,71,.6);
+    }
+    .topbar{display:flex; gap:14px; align-items:center; justify-content:space-between}
+    .brand{display:flex; align-items:center; gap:12px; padding:14px 0}
+    .dot{width:12px; height:12px; border-radius:999px; background:var(--accent); box-shadow: 0 0 0 6px rgba(96,165,250,.12)}
+    .brand h1{font-size:16px; margin:0}
+    .brand .sub{font-size:12px; color:var(--muted)}
+    .actions{display:flex; gap:10px; align-items:center}
+    .btn{
+      border:1px solid rgba(36,48,71,.9);
+      background: rgba(17,24,38,.6);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    .btn:hover{transform:translateY(-1px); border-color: rgba(96,165,250,.75)}
+    .grid{display:grid; grid-template-columns: 320px 1fr; gap:18px; align-items:start}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} header{position:static} }
+    .card{
+      background: linear-gradient(180deg, rgba(17,24,38,.9), rgba(15,23,42,.85));
+      border:1px solid rgba(36,48,71,.85);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .toc{position:sticky; top:84px; padding:16px}
+    @media (max-width: 980px){ .toc{position:static} }
+    .toc h2{font-size:14px; margin:0 0 12px 0; color:var(--muted); letter-spacing:.3px}
+    .toc a{
+      display:block;
+      padding:10px 10px;
+      border-radius: 12px;
+      border:1px solid transparent;
+      color: var(--text);
+      margin: 6px 0;
+      background: rgba(255,255,255,.02);
+    }
+    .toc a:hover{border-color: rgba(96,165,250,.35)}
+    .toc a.active{border-color: rgba(96,165,250,.7); background: rgba(96,165,250,.10)}
+    main{padding:18px}
+    .hero{display:grid; grid-template-columns: 1.2fr .8fr; gap:18px; padding:18px}
+    @media (max-width: 980px){ .hero{grid-template-columns:1fr} }
+    .hero h2{font-size:28px; margin:0 0 8px 0}
+    .meta{color:var(--muted); font-size:13px}
+    .pillrow{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+    .pill{font-size:12px; color: var(--muted); border:1px solid rgba(36,48,71,.85); background: rgba(255,255,255,.02); padding:8px 10px; border-radius:999px}
+    .figure{
+      border-radius: 16px; overflow:hidden;
+      border:1px solid rgba(36,48,71,.85);
+      background: rgba(0,0,0,.15);
+    }
+    .figure img{width:100%; height:auto; display:block}
+    .figcap{padding:10px 12px; font-size:12px; color: var(--muted); border-top:1px solid rgba(36,48,71,.7)}
+    section{padding:18px; margin:16px 0}
+    section h3{margin:0 0 10px 0; font-size:18px}
+    .content p{margin:0 0 10px 0; color:var(--text)}
+    .content .muted{color:var(--muted)}
+    .callout{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(96,165,250,.35);
+      background: rgba(96,165,250,.08);
+      color: var(--text);
+    }
+    .cols{display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:12px}
+    @media (max-width: 980px){ .cols{grid-template-columns:1fr} }
+    .mini{padding:14px; border-radius: 16px; border:1px solid rgba(36,48,71,.85); background: rgba(255,255,255,.02)}
+    .mini h4{margin:0 0 6px 0; font-size:14px; color:var(--muted)}
+    .mini ul{margin:0; padding-left:18px}
+    .mini li{margin:6px 0; color:var(--text)}
+    .quiz{padding:18px}
+    .quiz h3{margin:0 0 12px 0}
+    .q{padding:14px; border:1px solid rgba(36,48,71,.85); border-radius:16px; background: rgba(255,255,255,.02); margin:10px 0}
+    .qtitle{font-weight:600; margin-bottom:10px}
+    .opts{display:grid; gap:8px}
+    .opt{display:flex; gap:10px; align-items:flex-start; padding:10px; border-radius:12px; border:1px solid transparent; background: rgba(0,0,0,.12); cursor:pointer}
+    .opt:hover{border-color: rgba(96,165,250,.35)}
+    .opt input{margin-top:3px}
+    .explain{margin-top:10px; color:var(--muted); font-size:13px}
+    .result{margin-top:12px; padding:12px 14px; border-radius: 14px; border:1px dashed rgba(36,48,71,1); color: var(--muted)}
+    footer{color:var(--muted); font-size:12px; padding:24px 0; text-align:center}
+    @media print {
+      header, .toc, .actions, .btn {display:none !important}
+      body {background:white; color:black}
+      .card {box-shadow:none}
+      .content p, .mini li {color:#111}
+      .meta, .figcap, footer, .muted {color:#333}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="dot"></div>
+        <div>
+          <h1>DTA — Aula 01</h1>
+          <div class="sub">Desenho Técnico de Aeronaves • Página de apoio à instrução • Atualizado em 05/02/2026</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="window.print()">Imprimir / PDF</button>
+        <button class="btn" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Ir para Quiz</button>
+      </div>
+    </div>
+  </div>
+</header>
 
+<div class="wrap">
+  <div class="grid">
+    <aside class="card toc" aria-label="Sumário">
+      <h2>Sumário</h2>
+      <nav id="toc">
+        <a href="#introducao">1) Por que usar desenhos</a>
+<a href="#graficos">2) Gráficos computadorizados</a>
+<a href="#siglas">3) Termos e siglas (CAD/CAM/CAE)</a>
+<a href="#finalidade">4) Finalidade e função</a>
+<a href="#tipos">5) Tipos de desenhos (classes)</a>
+<a href="#detalhamento">6) Desenho de detalhamento</a>
+<a href="#montagem">7) Desenho de montagem</a>
+<a href="#instalacao">8) Desenho de instalação</a>
+<a href="#seccional">9) Vista seccional e tipos de seção</a>
+<a href="#secaototal">9.1) Seção total</a>
+<a href="#meia">9.2) Meia seção</a>
+<a href="#transversal">9.3) Seção transversal</a>
+<a href="#deslocada">9.4) Seção deslocada</a>
+      </nav>
+      <div class="callout" style="margin-top:14px">
+        <b>Dica para o aluno:</b> use o sumário para revisar antes da avaliação e faça o quiz ao final.
+      </div>
+    </aside>
+
+    <main class="card">
+      <div class="hero" id="topo">
+        <div>
+          <h2>Desenho Técnico de Aeronaves</h2>
+          <div class="meta">Aula nº 01 • Material de estudo (HTML) gerado a partir dos slides da disciplina.</div>
+          <div class="pillrow">
+            <span class="pill">Comunicação técnica</span>
+            <span class="pill">CAD/CAM/CAE</span>
+            <span class="pill">Tipos de desenhos</span>
+            <span class="pill">Vistas seccionais</span>
+          </div>
+          <div class="callout">
+            <b>Objetivo da aula:</b> entender o papel do desenho técnico como linguagem padronizada e reconhecer os principais tipos de desenhos usados na construção, montagem e manutenção aeronáutica.
+          </div>
+
+          <div class="cols">
+            <div class="mini">
+              <h4>Ao final, você deve ser capaz de</h4>
+              <ul>
+                <li>Explicar por que desenhos reduzem ambiguidades na comunicação.</li>
+                <li>Diferenciar CAD, CADD, CAM e CAE.</li>
+                <li>Identificar desenho de detalhamento, montagem e instalação.</li>
+                <li>Reconhecer tipos de seção: total, meia, transversal e deslocada.</li>
+              </ul>
+            </div>
+            <div class="mini">
+              <h4>Como estudar</h4>
+              <ul>
+                <li>Leia as seções em ordem e anote palavras-chave.</li>
+                <li>Observe as figuras (quando houver) e relacione com o texto.</li>
+                <li>Faça o quiz e confira as explicações.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="figure">
+          <img src='assets/slide-02-01.jpg' alt='Capa da aula' />
+          <div class="figcap">Figura 1 — Slide de abertura da Aula 01.</div>
+        </div>
+      </div>
+
+      <div style="padding:0 18px 18px 18px">
+
+        <section id="introducao">
+          <h3>1) Por que usar desenhos</h3>
+          <div class="content"><p>Trocar ideias é essencial para todos, não importando sua vocação ou posição. Normalmente essa troca é executada através da palavra falada ou escrita, mas em algumas condições o uso apenas de palavras é impraticável. A indústria descobriu que não poderia depender inteiramente das palavras escritas ou faladas para troca de ideias, pois entendimentos e interpretações errôneas acontecem frequentemente. Uma descrição escrita de um objeto pode ter seu sentido alterado apenas pela colocação de uma vírgula em lugar errado. O significado de uma descrição oral pode ser completamente mudado pelo uso de uma palavra errada. Para evitar esses possíveis erros a indústria usa desenhos para descrever objetos. Por esta razão o desenho é chamado de &quot;linguagem do desenhista&quot;. <br>O desenho, da maneira como nós o utilizamos, é um método de expressar as ideias que dizem respeito à construção ou montagem de objetos. Isto é feito com a ajuda de linhas, notas, abreviações e símbolos. É muito importante que o mecânico de aviação que vai fazer ou montar o objeto entenda o significado das diferentes linhas, notas, abreviações e símbolos que são usados em desenhos. (Para detalhes vide seção &quot;Linhas e seus Significados&quot; deste capítulo).</p></div>
+          
+        </section>
+    
+        <section id="graficos">
+          <h3>2) Gráficos computadorizados</h3>
+          <div class="content"><p>Gráficos Computadorizados <br>Desde o início da aviação o desenvolvimento de aeronaves, motores para aeronaves e outros componentes contaram muito com os desenhos. Por quase todo o século 20 os desenhos foram criados na prancheta de desenho com caneta ou lápis e papel. Contudo, com a introdução e os avanços da computação nas últimas décadas do século 20 a maneira com que os desenhos são criados mudou drasticamente.<br>Desde o início da aviação o desenvolvimento de aeronaves, motores para aeronaves e outros componentes contaram muito com os desenhos. Por quase todo o século 20 os desenhos foram criados na prancheta de desenho com caneta ou lápis e papel. Contudo, com a introdução e os avanços da computação nas últimas décadas do século 20 a maneira com que os desenhos são criados mudou drasticamente.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-05-01.png" alt="Imagem do slide relacionada à seção 2) Gráficos computadorizados">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="siglas">
+          <h3>3) Termos e siglas (CAD/CAM/CAE)</h3>
+          <div class="content"><p>Gráficos Computadorizados<br>Novos termos e siglas se tornaram lugar-comum. Os termos mais comuns são:<br> Gráficos Computadorizados – desenhos com o uso de um computador,<br>Desenho de Projeto Assistido por Computador (Computer Aided Design Drafting - CADD) – onde um computador é utilizado no processo de desenho e projeto,<br>Projeto Assistido por Computador (Computer Aided Design - CAD) – onde um computador é utilizado no projeto de um produto,<br>Fabricação Assistida por Computador (Computer Aided Manufacturing - CAM) – onde um computador é utilizado na fabricação de um produto, e,<br> Engenharia Assistida por Computador (Computer Aided Engineering – CAE) – onde um computador é utilizado na engenharia de um produto.<br>Como os hardwares e softwares de computadores continuam a evoluir há uma grande quantidade de CAE sendo feita em menos tempo e com custo menor. Além de projetar produtos o CAE também é usado para análise de produto, montagem, simulações e informações para manutenção.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-06-01.png" alt="Imagem do slide relacionada à seção 3) Termos e siglas (CAD/CAM/CAE)">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="finalidade">
+          <h3>4) Finalidade e função</h3>
+          <div class="content"><p>Finalidade e Função dos Desenhos Técnicos de Aeronaves<br>Os desenhos e as impressões são o elo entre os engenheiros que projetam o avião e os trabalhadores que o constrói, mantém e consertam-no. Uma impressão pode ser a cópia de trabalho de um desenho para uma peça ou conjunto de peças, ou para projeto de um sistema ou grupo de sistemas. Elas são feitas colocando um traçado do desenho em papel vegetal sobre uma folha de papel quimicamente tratado, expondo-o a uma intensa luz por um curto período de tempo.<br>Quando o papel exposto é revelado, ele fica azul onde a luz penetrou. As linhas desenhadas do traçado em vegetal, como bloquearam a passagem da luz, mostram linhas brancas sobre um fundo azul. Existem também outros tipos de papéis reveladores. Algumas cópias podem ter um fundo branco com as linhas coloridas ou um fundo colorido com linhas brancas.</p><p>Finalidade e Função dos Desenhos Técnicos de Aeronaves<br>Os desenhos criados com o uso do computador podem ser visualizados através do monitor do computador ou podem ser impressas em uma cópia física através de uma impressora jato de tinta ou laser. Desenhos maiores podem ser impressos em uma plotadora ou outra impressora para grandes formatos. Impressoras maiores podem imprimir desenhos de até 42 polegadas de altura por 600 polegadas de largura se utilizado um rolo de papel contínuo.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-08-01.png" alt="Imagem do slide relacionada à seção 4) Finalidade e função">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="tipos">
+          <h3>5) Tipos de desenhos (classes)</h3>
+          <div class="content"><p>Tipos de Desenhos <br>Os desenhos têm que dar informações como o tamanho e o formato do objeto e todas as suas peças, especificações para o material a ser utilizado, como o material deve ser acabado, como as peças devem ser montadas e qualquer outra informação essencial para fazer e montar um determinado objeto.<br>Desenhos de trabalho podem ser divididos em três classes: (1) detalhamento, (2) montagem e (3) instalação.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-10-01.png" alt="Imagem do slide relacionada à seção 5) Tipos de desenhos (classes)">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="detalhamento">
+          <h3>6) Desenho de detalhamento</h3>
+          <div class="content"><p>Desenhos de Detalhamento </p><p>O desenho de detalhamento é a descrição de uma única peça, descrito pelas linhas, notas e símbolos as especificações para tamanho, formato, material e métodos de fabricação a serem usados para fazer a peça. Os desenhos de detalhamento são normalmente simples e quando as peças individuais são pequenas, vários desenhos de detalhamento podem ser exibidos em uma mesma cópia.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-11-01.png" alt="Imagem do slide relacionada à seção 6) Desenho de detalhamento">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="montagem">
+          <h3>7) Desenho de montagem</h3>
+          <div class="content"><p>Desenhos de Montagem  </p><p>Um desenho de montagem é a descrição de um objeto feito de duas ou mais partes. Ele descreve o objeto dando uma ideia geral de tamanho e forma. Seu objetivo principal é mostrar a relação entre as diversas peças. Um desenho de montagem normalmente é mais complexo e é geralmente acompanhado por desenhos de detalhamentos das diversas peças.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-12-01.png" alt="Imagem do slide relacionada à seção 7) Desenho de montagem">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="instalacao">
+          <h3>8) Desenho de instalação</h3>
+          <div class="content"><p>Desenho de Instalação</p><p>O desenho de instalação é o que inclui todas as informações necessárias para a posição de instalação final de uma peça ou conjunto na aeronave. Ele mostra as dimensões necessárias para a localização de peças específicas em relação a outras peças e dimensões de referência que são úteis para o trabalho posterior na oficina.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-13-01.png" alt="Imagem do slide relacionada à seção 8) Desenho de instalação">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="seccional">
+          <h3>9) Vista seccional e tipos de seção</h3>
+          <div class="content"><p>Desenho de Vista Seccional</p><p>Uma vista da seção ou seccional é obtida através de um corte em um objeto para mostrar sua forma e constituição em um plano cortado. A peça ou peças seccionadas são mostradas por linhas de corte (tracejado). Nos seguintes slides estão descritos tipos de seção.</p></div>
+          
+        </section>
+    
+        <section id="secaototal">
+          <h3>9.1) Seção total</h3>
+          <div class="content"><p>Seção total </p><p>Uma vista de seção total é utilizada quando a construção interior ou características ocultas de um objeto não podem ser claramente observadas pela vista externa. Por exemplo, a Figura a baixo mostra na vista seccional de um conector de cabo coaxial, a construção interna do conector.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-15-01.png" alt="Imagem do slide relacionada à seção 9.1) Seção total">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="meia">
+          <h3>9.2) Meia seção</h3>
+          <div class="content"><p>Meia seção</p><p>Em uma meia seção o plano cortado se estende apenas até a metade do objeto, deixando a outra metade do objeto com a vista exterior.</p><p>As meias seções são usadas com vantagem com objetos simétricos para exibir tanto o interior quanto o exterior.</p><p>A Figura ao lado é uma vista de meia seção de um conector de rápida desconexão utilizado em sistemas de fluído de aeronaves.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-16-01.png" alt="Imagem do slide relacionada à seção 9.2) Meia seção">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="transversal">
+          <h3>9.3) Seção transversal</h3>
+          <div class="content"><p>Seção transversal</p><p>Uma seção transversal retirada diretamente da vista exterior mostra o formato do corte através da peça, como os raios de uma roda. Um exemplo de seção transversal é mostrado na Figura ao lado.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-17-01.png" alt="Imagem do slide relacionada à seção 9.3) Seção transversal">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="deslocada">
+          <h3>9.4) Seção deslocada</h3>
+          <div class="content"><p>Seção Deslocada</p><p>Uma seção deslocada ilustra peças específicas de um objeto. Ela é retirada como uma seção transversal, porém é posicionada no lado e traz detalhes pertinentes, frequentemente retirados de uma escala maior do que a vista na qual está indicada.<br>A Figura 2-7 é uma ilustração de uma seção deslocada. A seção A-A mostra o formato de uma seção de corte de um objeto em uma linha de plano de corte A-A. A seção B-B mostra o formato de corte transversal na linha de plano de corte B-B. <br>Estas vistas seccionadas são retiradas da mesma escala da vista principal. Note que elas são normalmente retiradas em uma escala maior para ressaltar detalhes pertinentes.</p></div>
+          
+        <div class="figure" style="margin-top:12px">
+          <img src="assets/slide-18-01.png" alt="Imagem do slide relacionada à seção 9.4) Seção deslocada">
+          <div class="figcap">Figura — Imagem extraída do slide correspondente.</div>
+        </div>
+        </section>
+    
+        <section id="quiz" class="quiz">
+          <h3>Quiz rápido (autoavaliação)</h3>
+          <div class="content"><p class="muted">Marque uma alternativa em cada questão e clique em “Corrigir”.</p></div>
+          
+  <div class="q" data-ans="1">
+    <div class="qtitle">Qual é o principal motivo de a indústria usar desenhos além de palavras?</div>
+    <div class="opts">
+    <label class="opt">
+      <input type="radio" name="q1" value="0">
+      <span>Porque desenhos são sempre mais rápidos de fazer.</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q1" value="1">
+      <span>Para reduzir interpretações errôneas e padronizar a comunicação.</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q1" value="2">
+      <span>Porque a escrita não é permitida em manutenção.</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q1" value="3">
+      <span>Para substituir totalmente as especificações.</span>
+    </label></div>
+    <div class="explain" hidden>Desenhos evitam ambiguidades de comunicação (interpretações errôneas).</div>
+  </div>
+
+  <div class="q" data-ans="1">
+    <div class="qtitle">Qual termo descreve o uso do computador no processo de desenho e projeto (drafting)?</div>
+    <div class="opts">
+    <label class="opt">
+      <input type="radio" name="q2" value="0">
+      <span>CAM</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q2" value="1">
+      <span>CADD</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q2" value="2">
+      <span>CAE</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q2" value="3">
+      <span>CAD</span>
+    </label></div>
+    <div class="explain" hidden>CADD (Computer Aided Design Drafting) — computador no processo de desenho e projeto.</div>
+  </div>
+
+  <div class="q" data-ans="1">
+    <div class="qtitle">Em qual tipo de seção o plano de corte vai apenas até a metade do objeto, mostrando interior e exterior?</div>
+    <div class="opts">
+    <label class="opt">
+      <input type="radio" name="q3" value="0">
+      <span>Seção total</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q3" value="1">
+      <span>Meia seção</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q3" value="2">
+      <span>Seção transversal</span>
+    </label>
+    <label class="opt">
+      <input type="radio" name="q3" value="3">
+      <span>Seção deslocada</span>
+    </label></div>
+    <div class="explain" hidden>Meia seção: metade em corte, metade em vista externa (útil para objetos simétricos).</div>
+  </div>
+
+          <button class="btn" onclick="gradeQuiz()">Corrigir</button>
+          <div id="result" class="result" aria-live="polite"></div>
+        </section>
+
+        <footer>
+          EMCA • DTA — Aula 01 • Página gerada a partir do arquivo de slides fornecido.
+        </footer>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  const tocLinks = Array.from(document.querySelectorAll('#toc a'));
+  const secEls = tocLinks.map(a => document.querySelector(a.getAttribute('href')));
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const id = '#' + e.target.id;
+        const active = tocLinks.find(l => l.getAttribute('href') === id);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+
+  secEls.forEach(s => s && obs.observe(s));
+
+  tocLinks.forEach(a => {
+    a.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) el.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  function gradeQuiz() {
+    const qs = Array.from(document.querySelectorAll('.q'));
+    let correctCount = 0;
+
+    qs.forEach(q => {
+      const ans = Number(q.dataset.ans);
+      const chosen = q.querySelector('input[type="radio"]:checked');
+      const explain = q.querySelector('.explain');
+      explain.hidden = false;
+
+      q.querySelectorAll('.opt').forEach(o => o.style.borderColor = 'transparent');
+
+      if (chosen) {
+        const val = Number(chosen.value);
+        const chosenLabel = chosen.closest('.opt');
+
+        if (val === ans) {
+          correctCount += 1;
+          chosenLabel.style.borderColor = 'rgba(52,211,153,.75)';
+        } else {
+          chosenLabel.style.borderColor = 'rgba(251,113,133,.75)';
+          const right = q.querySelector('input[value="' + ans + '"]').closest('.opt');
+          right.style.borderColor = 'rgba(52,211,153,.75)';
+        }
+      } else {
+        const right = q.querySelector('input[value="' + ans + '"]').closest('.opt');
+        right.style.borderColor = 'rgba(52,211,153,.75)';
+      }
+    });
+
+    const pct = Math.round((correctCount / qs.length) * 100);
+    document.getElementById('result').textContent =
+      'Resultado: ' + correctCount + ' de ' + qs.length + ' (' + pct + '%). Refaça as questões erradas lendo as explicações.';
+  }
+</script>
+
+</body>
+</html>
